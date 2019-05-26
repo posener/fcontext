@@ -2,13 +2,18 @@ package prefix
 
 import "bytes"
 
-const size = 64
+const (
+	chunkSize = 64
+	MaxByte   = 32
+)
 
 type Prefix struct {
-	content [size]byte
+	content [chunkSize]byte
 	i       int
-	rank    int
-	prev    *Prefix
+	// bi is index in current byte.
+	bi   uint
+	rank int
+	prev *Prefix
 }
 
 func New() *Prefix {
@@ -16,20 +21,33 @@ func New() *Prefix {
 }
 
 func (p *Prefix) Append(b byte) *Prefix {
-	if p == nil || p.i == size {
+	if b >= MaxByte {
+		panic("prefix: exceeded MaxByte")
+	}
+	p = p.prefixToAppend()
+	p.setCurrentByte(b)
+	return p
+}
+
+func (p *Prefix) prefixToAppend() *Prefix {
+	if p == nil || p.i == chunkSize {
 		rank := 0
 		if p != nil {
 			rank = p.rank + 1
 		}
-		ret := Prefix{prev: p, rank: rank}
-		ret.content[ret.i] = b
-		ret.i++
-		return &ret
+		return &Prefix{prev: p, rank: rank}
 	}
+	// Copy current prefix
 	ret := *p
-	ret.content[ret.i] = b
-	ret.i++
 	return &ret
+}
+func (p *Prefix) setCurrentByte(b byte) {
+	p.content[p.i] |= b << p.bi
+	p.bi++
+	if p.bi == 8 {
+		p.bi = 0
+		p.i++
+	}
 }
 
 func (p *Prefix) HasPrefix(q *Prefix) bool {
@@ -39,7 +57,7 @@ func (p *Prefix) HasPrefix(q *Prefix) bool {
 	if p == nil {
 		return false
 	}
-	if p.rank < q.rank || (p.rank == q.rank && p.i < q.i) {
+	if p.rank < q.rank || (p.rank == q.rank && (p.i < q.i || (p.i == q.i && p.bi < q.bi))) {
 		return false
 	}
 	for p.rank > q.rank {
@@ -48,14 +66,17 @@ func (p *Prefix) HasPrefix(q *Prefix) bool {
 	// Here p.rank == q.rank.
 	// Iterate over all the bytes blocks and check for prefix match.
 	for q != nil {
-		if !bytes.HasPrefix(p.content[:q.i], q.content[:q.i]) {
+		if q.i > 0 {
+			if !bytes.HasPrefix(p.content[:q.i-1], q.content[:q.i-1]) {
+				return false
+			}
+		}
+		// Compare last byte.
+		mask := byte((1 << q.bi) - 1)
+		if (p.content[q.i] & mask) != (q.content[q.i] & mask) {
 			return false
 		}
 		p, q = p.prev, q.prev
 	}
 	return true
-}
-
-func (p *Prefix) len() int {
-	return p.rank*size + p.i
 }
