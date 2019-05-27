@@ -52,6 +52,21 @@ and 71 times better for 1000 values.
 the standard library context. (Can take up to 10 times if the
 context is only grown shallowly).
 
+#### Usage
+
+This library is fully compatible with the standard library context.
+
+```go
+import (
+```
+
+-	"context"
++ 	context "github.com/posener/fcontext"
+
+```go
+)
+```
+
 
 ---
 
