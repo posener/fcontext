@@ -39,18 +39,21 @@ func TestValue_valueOverride(t *testing.T) {
 	assert.Equal(t, 1, ctx1.Value(0))
 }
 
-func TestWithValues(t *testing.T) {
+func TestConcurrency(t *testing.T) {
 	t.Parallel()
 
-	ctx := WithValues(Background(), 0, 0, 1, 1)
-	assert.Equal(t, 0, ctx.Value(0))
-	assert.Equal(t, 1, ctx.Value(1))
-}
+	const n = 1000
 
-func TestWithValues_panic(t *testing.T) {
-	t.Parallel()
+	ctx1 := WithValue(Background(), 0, 0)
+	ctx2 := WithValue(ctx1, 1, 1)
 
-	assert.Panics(t, func() {
-		WithValues(Background(), 0)
-	})
+	go func() {
+		for i := 0; i < n; i++ {
+			ctx1.Value(0)
+		}
+	}()
+
+	for i := 0; i < n; i++ {
+		ctx2 = WithValue(ctx2, i, i)
+	}
 }

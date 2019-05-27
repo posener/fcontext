@@ -1,9 +1,9 @@
 package main
 
 import (
-	"log"
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"regexp"
 	"strconv"
