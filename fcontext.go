@@ -5,9 +5,9 @@
 // The standard library context provides values access-time which
 // is linear with the amount of values that are stored in the
 // it. This implementation provides a constant access time in the
-// most common context use case. Please see the benchmarks
-// below for details. Other parts of the context implementation
-// left untouched.
+// most common context use case (This is why the term 'pseudo' is
+// used). Please see the benchmarks below for details.
+// Other parts of the context implementation left untouched.
 //
 // Concepts
 //
@@ -31,9 +31,7 @@
 //
 // Benchmarks
 //
-// Run the benchmarks with `make bench`.
-//
-// On my machine, I got the following results:
+// Run the benchmarks with `make bench`. Results (On personal machine):
 //
 // **Access**: Constant access time regardless to the number of stored
 // values. Compared to the standard library, on the average case, it
