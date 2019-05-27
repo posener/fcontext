@@ -11,7 +11,7 @@ most common context use case. Please see the benchmarks
 below for details. Other parts of the context implementation
 left untouched.
 
-#### Principle
+#### Concepts
 
 The main assumption that is made in this implementation is that
 context values tree is mostly grows tall and barely grows wide.
