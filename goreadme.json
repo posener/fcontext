@@ -1,0 +1,8 @@
+{
+	"functions": true,
+	"badges": {
+		"goreadme": true,
+		"travis_ci": true,
+		"go_doc": true
+	}
+}
