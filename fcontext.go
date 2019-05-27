@@ -41,6 +41,15 @@
 // **Store**: About 5 times slower and takes about 5 more memory than
 // the standard library context. (Can take up to 10 times if the
 // context is only grown shallowly).
+//
+// Usage
+//
+// This library is fully compatible with the standard library context.
+//
+// 	 import (
+// 	-	"context"
+// 	+ 	context "github.com/posener/fcontext"
+// 	 )
 package fcontext
 
 // node implements the Context interface.
