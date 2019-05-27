@@ -39,21 +39,6 @@ func TestValue_valueOverride(t *testing.T) {
 	assert.Equal(t, 1, ctx1.Value(0))
 }
 
-func TestValue_byteOverflow(t *testing.T) {
-	t.Parallel()
-
-	ctx0 := Background()
-	var ctxs []Context
-
-	for i := 0; i < 1024; i++ {
-		ctxs = append(ctxs, WithValue(ctx0, i, i))
-	}
-
-	for i, ctx := range ctxs {
-		assert.Equal(t, i, ctx.Value(i))
-	}
-}
-
 func TestWithValues(t *testing.T) {
 	t.Parallel()
 
