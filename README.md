@@ -56,15 +56,11 @@ context is only grown shallowly).
 
 This library is fully compatible with the standard library context.
 
-```go
-import (
-```
-
+```diff
+ import (
 -	"context"
 + 	context "github.com/posener/fcontext"
-
-```go
-)
+ )
 ```
 
 
