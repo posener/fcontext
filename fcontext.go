@@ -78,12 +78,12 @@ type node struct {
 	// a list of all assigned values to this key, with additional access
 	// information for each key.
 	values map[interface{}][]value
-	// mu for locking values when accessed.
-	mu *sync.RWMutex
 	// rank is the the depth of the current context from the root context.
 	rank int
-	// fork indicates if a child was already created from this node.
-	fork bool
+	// hasChild indicates if a child was already created from this node.
+	hasChild bool
+	// mu to allow concurrent usage.
+	mu *sync.RWMutex
 }
 
 // Holds value's data and the rank of the context that this data was created in.
@@ -92,36 +92,40 @@ type value struct {
 	rank int
 }
 
-// WithValue returns a copy of parent in which the value associated with key is val.
-// The exposed behavior is identical to the standard library function:
-// https://golang.org/pkg/context/#WithValue.
+// WithValue returns a copy of parent in which the value associated with
+// key is val. The exposed behavior is identical to the standard library
+// function: https://golang.org/pkg/context/#WithValue.
 func WithValue(ctx Context, key, val interface{}) Context {
 	child := newChild(ctx)
 	child.mu.Lock()
 	defer child.mu.Unlock()
-	child.values[key] = append(child.values[key], value{data: val, rank: child.rank})
+	child.values[key] = append(child.values[key],
+		value{data: val, rank: child.rank})
 	return child
 }
 
 // newChild prepares a new child for a given parent context.
 func newChild(ctx Context) *node {
 	parent, ok := ctx.(*node)
-	// If the given context is not a node, or if the given context is
-	// a node that already had a child, return a new node with new map
-	// fro the given context.
-	if !ok || parent.fork {
+	// Convert a non-node context.
+	if !ok {
 		return new(ctx)
 	}
 
-	// Copy the parent to the child and increase the child rank.
 	parent.mu.Lock()
 	defer parent.mu.Unlock()
+
+	// Nodes are allowed to have only one child, return an empty new node
+	// for the given context.
+	if parent.hasChild {
+		return new(ctx)
+	}
+
+	// Create a new child from this parent node.
 	child := *parent
 	child.rank++
 
-	// Set the fork flag to the parent since it is no longer allowed to
-	// have children that share the same values map.
-	parent.fork = true
+	parent.hasChild = true
 
 	return &child
 }
@@ -131,9 +135,17 @@ func newChild(ctx Context) *node {
 // For more info see the interface documentation:
 // https://golang.org/pkg/context/#Context
 func (n *node) Value(key interface{}) interface{} {
+	if val := n.lookupValues(key); val != nil {
+		return val
+	}
+	// Fallback to lookup in parent context.
+	return n.Context.Value(key)
+}
+
+func (n *node) lookupValues(key interface{}) interface{} {
 	n.mu.RLock()
+	defer n.mu.RUnlock()
 	values := n.values[key]
-	n.mu.RUnlock()
 	// Iterate the values in a reverse order to get the
 	// most updated value that matches n's rank. (Most recent
 	// values are added last).
@@ -145,8 +157,7 @@ func (n *node) Value(key interface{}) interface{} {
 			return v.data
 		}
 	}
-	// Fallback to lookup in parent context.
-	return n.Context.Value(key)
+	return nil
 }
 
 // new converts any context to a new node with a new values map.

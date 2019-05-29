@@ -1,6 +1,7 @@
 package fcontext
 
 import (
+	"sync"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -44,16 +45,35 @@ func TestConcurrency(t *testing.T) {
 
 	const n = 1000
 
-	ctx1 := WithValue(Background(), 0, 0)
-	ctx2 := WithValue(ctx1, 1, 1)
+	ctx := WithValue(Background(), 0, 0)
 
-	go func() {
+	var wg sync.WaitGroup
+	wg.Add(3)
+
+	go func(ctx Context) {
 		for i := 0; i < n; i++ {
-			ctx1.Value(0)
+			ctx.Value(0)
 		}
-	}()
+		wg.Done()
+	}(ctx)
+
+	go func(ctx Context) {
+		for i := 0; i < n; i++ {
+			ctx.Value(0)
+		}
+		wg.Done()
+	}(ctx)
+
+	go func(ctx Context) {
+		for i := 0; i < n; i++ {
+			WithValue(ctx, i, i)
+		}
+		wg.Done()
+	}(ctx)
 
 	for i := 0; i < n; i++ {
-		ctx2 = WithValue(ctx2, i, i)
+		ctx = WithValue(ctx, i, i)
 	}
+
+	wg.Wait()
 }
