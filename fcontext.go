@@ -48,11 +48,11 @@
 //
 // **Access**: Constant access time regardless to the number of stored
 // values. Compared to the standard library, on the average case, it
-// performs 40% better for 10 values, 9 times better for 100 values
-// and 71 times better for 1000 values.
+// performs 10% better for 10 values, 4 times better for 100 values
+// and 35 times better for 1000 values.
 //
-// **Store**: About 5 times slower and takes about 5 more memory than
-// the standard library context. (Can take up to 10 times if the
+// **Store**: About 6 times slower and takes about 4 more memory than
+// the standard library context. (Can take up to 8 times if the
 // context is only grown shallowly).
 //
 // Usage
