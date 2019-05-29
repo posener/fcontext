@@ -1,12 +1,12 @@
-package fcontext
+package context
 
-import "context"
+import stdcontext "context"
 
-type Context = context.Context
+type Context = stdcontext.Context
 
 var (
-	Background  = context.Background
-	TODO        = context.TODO
-	WithCancel  = context.WithCancel
-	WithTimeout = context.WithTimeout
+	Background  = stdcontext.Background
+	TODO        = stdcontext.TODO
+	WithCancel  = stdcontext.WithCancel
+	WithTimeout = stdcontext.WithTimeout
 )

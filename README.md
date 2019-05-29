@@ -78,7 +78,7 @@ This library is fully compatible with the standard library context.
 ```diff
  import (
 -	"context"
-+ 	context "github.com/posener/fcontext"
++ 	"github.com/posener/fcontext"
  )
 ```
 

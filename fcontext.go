@@ -1,4 +1,4 @@
-// Package fcontext provides a fully compatible (pseudo) constant
+// Package context provides a fully compatible (pseudo) constant
 // value access-time alternative to the standard library context
 // package.
 //
@@ -65,7 +65,7 @@
 // 	-	"context"
 // 	+ 	context "github.com/posener/fcontext"
 // 	 )
-package fcontext
+package context
 
 import (
 	"sync"

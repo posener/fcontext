@@ -1,11 +1,11 @@
-package fcontext_test
+package context_test
 
 import (
 	"context"
 	"fmt"
 	"testing"
 
-	"github.com/posener/fcontext"
+	fcontext "github.com/posener/fcontext"
 )
 
 type withValue func(context.Context, interface{}, interface{}) context.Context
