@@ -13,8 +13,9 @@ package.
 The standard library context provides values access-time which
 is linear with the amount of values that are stored in the
 it. This implementation provides a constant access time in the
-most common context use case (This is why the term 'pseudo' is
-used). Please see the benchmarks below for details.
+most common context use case and linear access time for the
+less common use cases (This is why the term 'pseudo' is used).
+Please see the benchmarks below for details.
 Other parts of the context implementation left untouched.
 
 #### Concepts
@@ -36,6 +37,20 @@ And not creating new branches of the existing context:
 ctx1 := context.WithValue(ctx, 1, 1)
 ctx2 := context.WithValue(ctx, 2, 2)
 ctx3 := context.WithValue(ctx, 3, 3)
+```
+
+The last form might be more familiar in the form:
+
+```go
+func main() {
+	ctx := context.WithValue(context.Background(), 2, 2)
+	f(ctx)
+	f(ctx)
+}
+
+func f(ctx context.Context) {
+	ctx = context.WithValue(2, 2)
+}
 ```
 
 This implementation will work either way, but will improve the
