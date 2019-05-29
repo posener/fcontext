@@ -99,9 +99,32 @@ func WithValue(ctx Context, key, val interface{}) Context {
 	child := newChild(ctx)
 	child.mu.Lock()
 	defer child.mu.Unlock()
-	child.values[key] = append(child.values[key],
-		value{data: val, rank: child.rank})
+	child.put(key, val)
 	return child
+}
+
+// WithValues is similar to WithValue, but for multiple key-values paris.
+// The pairs argument and must be of even number of elements.
+// It is more efficient to use this function than call the WithValue
+// function multiple times.
+func WithValues(ctx Context, pairs ...interface{}) Context {
+	if len(pairs) == 0 {
+		return ctx
+	}
+	if len(pairs)%2 != 0 {
+		panic("pairs length must be even")
+	}
+	child := newChild(ctx)
+	child.mu.Lock()
+	defer child.mu.Unlock()
+	for i := 0; i < len(pairs); i += 2 {
+		child.put(pairs[i], pairs[i+1])
+	}
+	return child
+}
+
+func (n *node) put(key, val interface{}) {
+	n.values[key] = append(n.values[key], value{data: val, rank: n.rank})
 }
 
 // newChild prepares a new child for a given parent context.
