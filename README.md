@@ -1,6 +1,8 @@
 # fcontext
 
 [![Build Status](https://travis-ci.org/posener/fcontext.svg?branch=master)](https://travis-ci.org/posener/fcontext)
+[![codecov](https://codecov.io/gh/posener/fcontext/branch/master/graph/badge.svg)](https://codecov.io/gh/posener/fcontext)
+[![golangci](https://golangci.com/badges/github.com/posener/fcontext.svg)](https://golangci.com/r/github.com/posener/fcontext)
 [![GoDoc](https://godoc.org/github.com/posener/fcontext?status.svg)](http://godoc.org/github.com/posener/fcontext)
 [![goreadme](https://goreadme.herokuapp.com/badge/posener/fcontext.svg)](https://goreadme.herokuapp.com)
 
