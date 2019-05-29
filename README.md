@@ -39,17 +39,19 @@ ctx2 := context.WithValue(ctx, 2, 2)
 ctx3 := context.WithValue(ctx, 3, 3)
 ```
 
-The last form might be more familiar in the form:
+The last form might be more familiar in the following code:
 
 ```go
 func main() {
 	ctx := context.WithValue(context.Background(), 2, 2)
 	f(ctx)
 	f(ctx)
+	// ...
 }
 
 func f(ctx context.Context) {
 	ctx = context.WithValue(2, 2)
+	// ...
 }
 ```
 
