@@ -27,16 +27,18 @@
 // 	ctx2 := context.WithValue(ctx, 2, 2)
 // 	ctx3 := context.WithValue(ctx, 3, 3)
 //
-// The last form might be more familiar in the form:
+// The last form might be more familiar in the following code:
 //
 //	func main() {
 // 		ctx := context.WithValue(context.Background(), 2, 2)
 // 		f(ctx)
 //		f(ctx)
+// 		// ...
 // 	}
 //
 //	func f(ctx context.Context) {
 // 		ctx = context.WithValue(2, 2)
+// 		// ...
 // 	}
 //
 // This implementation will work either way, but will improve the
@@ -109,11 +111,7 @@ type value struct {
 // key is val. The exposed behavior is identical to the standard library
 // function: https://golang.org/pkg/context/#WithValue.
 func WithValue(ctx Context, key, val interface{}) Context {
-	child := newChild(ctx)
-	child.mu.Lock()
-	defer child.mu.Unlock()
-	child.put(key, val)
-	return child
+	return WithValues(ctx, key, val)
 }
 
 // WithValues is similar to WithValue, but for multiple key-values paris.
@@ -131,13 +129,11 @@ func WithValues(ctx Context, pairs ...interface{}) Context {
 	child.mu.Lock()
 	defer child.mu.Unlock()
 	for i := 0; i < len(pairs); i += 2 {
-		child.put(pairs[i], pairs[i+1])
+		key, val := pairs[i], pairs[i+1]
+		child.values[key] = append(child.values[key],
+			value{data: val, rank: child.rank})
 	}
 	return child
-}
-
-func (n *node) put(key, val interface{}) {
-	n.values[key] = append(n.values[key], value{data: val, rank: n.rank})
 }
 
 // newChild prepares a new child for a given parent context.
