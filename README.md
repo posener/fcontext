@@ -1,4 +1,4 @@
-# fcontext
+# context
 
 [![Build Status](https://travis-ci.org/posener/fcontext.svg?branch=master)](https://travis-ci.org/posener/fcontext)
 [![codecov](https://codecov.io/gh/posener/fcontext/branch/master/graph/badge.svg)](https://codecov.io/gh/posener/fcontext)
@@ -6,7 +6,7 @@
 [![GoDoc](https://godoc.org/github.com/posener/fcontext?status.svg)](http://godoc.org/github.com/posener/fcontext)
 [![goreadme](https://goreadme.herokuapp.com/badge/posener/fcontext.svg)](https://goreadme.herokuapp.com)
 
-Package fcontext provides a fully compatible (pseudo) constant
+Package context provides a fully compatible (pseudo) constant
 value access-time alternative to the standard library context
 package.
 
@@ -78,7 +78,7 @@ This library is fully compatible with the standard library context.
 ```diff
  import (
 -	"context"
-+ 	"github.com/posener/fcontext"
++ 	context "github.com/posener/fcontext"
  )
 ```
 
