@@ -46,7 +46,13 @@
 //
 // Benchmarks
 //
-// Run the benchmarks with `make bench`. Results (On personal machine):
+// Run the benchmarks with `make bench`. Notice that micro benchmarks
+// do not necessarily represent real world scenarios. Another
+// consideration is that using this context will result in an extra
+// goroutine when it is converted to a standard cancellable context
+// ([Go issue](https://github.com/golang/go/issues/28728)).
+//
+// Results (On personal machine):
 //
 // **Access**: Constant access time regardless to the number of stored
 // values. Compared to the standard library, on the average case, it
