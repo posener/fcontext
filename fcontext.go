@@ -50,7 +50,7 @@
 // do not necessarily represent real world scenarios. Another
 // consideration is that using this context will result in an extra
 // goroutine when it is converted to a standard cancellable context
-// ([Go issue](https://github.com/golang/go/issues/28728)).
+// (Go issue) https://github.com/golang/go/issues/28728.
 //
 // Results (On personal machine):
 //
