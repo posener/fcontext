@@ -3,6 +3,7 @@ package fcontext
 import "context"
 
 type Context = context.Context
+type CancelFunc = context.CancelFunc
 
 var (
 	Background  = context.Background
