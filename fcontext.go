@@ -180,6 +180,10 @@ func (n *node) Value(key interface{}) interface{} {
 	return n.Context.Value(key)
 }
 
+func (n *node) Parent() Context {
+	return n.Context
+}
+
 func (n *node) lookupValues(key interface{}) interface{} {
 	n.mu.RLock()
 	defer n.mu.RUnlock()

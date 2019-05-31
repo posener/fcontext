@@ -40,7 +40,7 @@ func TestValue_valueOverride(t *testing.T) {
 	assert.Equal(t, 1, ctx1.Value(0))
 }
 
-func TestConcurrency(t *testing.T) {
+func TestValueConcurrency(t *testing.T) {
 	t.Parallel()
 
 	const n = 1000
