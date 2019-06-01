@@ -1,13 +1,14 @@
 package fcontext
 
 import (
-	"github.com/posener/fcontext/contexttest"
 	"testing"
+
+	"github.com/posener/fcontext/contexttest"
 )
 
 func TestContext(t *testing.T) {
-	imp := contexttest.Implementation {
-		WithValue: WithValue,
+	imp := contexttest.Implementation{
+		WithValue:  WithValue,
 		WithCancel: WithCancel,
 	}
 	imp.Run(t)

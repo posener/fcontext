@@ -1,17 +1,17 @@
 package contexttest
 
 import (
-	"sync"
-	"time"
-	"testing"
 	"context"
+	"sync"
+	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
 
 type Implementation struct {
 	WithCancel func(ctx context.Context) (context.Context, context.CancelFunc)
-	WithValue func(ctx context.Context, key, val interface{}) context.Context
+	WithValue  func(ctx context.Context, key, val interface{}) context.Context
 }
 
 func (imp *Implementation) Run(t *testing.T) {
@@ -56,7 +56,7 @@ func (imp *Implementation) testValue_valueOverride(t *testing.T) {
 	assert.Equal(t, 1, ctx1.Value(0))
 }
 
-func (imp *Implementation)testValue_concurrency(t *testing.T) {
+func (imp *Implementation) testValue_concurrency(t *testing.T) {
 	t.Parallel()
 
 	const n = 1000
@@ -131,7 +131,7 @@ func (imp *Implementation) testCancel_tree(t *testing.T) {
 	assertCanceled(t, ctx000)
 }
 
-func  (imp *Implementation) testCancel_parentAlreadyCanceled(t *testing.T) {
+func (imp *Implementation) testCancel_parentAlreadyCanceled(t *testing.T) {
 	t.Parallel()
 
 	ctx, cancel := imp.WithCancel(context.Background())
