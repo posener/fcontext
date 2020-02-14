@@ -61,10 +61,13 @@ performance of the first pattern significantly.
 #### Benchmarks
 
 Run the benchmarks with `make bench`. Notice that micro benchmarks
-do not necessarily represent real world scenarios. Another
-consideration is that using this context will result in an extra
-goroutine when it is converted to a standard cancellable context
-[Go issue](https://github.com/golang/go/issues/28728).
+do not necessarily represent real world scenarios.
+
+If you are using a Go version prior to 1.14, Another consideration
+is that using this context will result in an extra goroutine when
+it is converted to a standard cancellable context
+[Go issue](https://github.com/golang/go/issues/28728),
+[Fix](https://go-review.googlesource.com/c/go/+/196521).
 
 Results (On personal machine):
 
