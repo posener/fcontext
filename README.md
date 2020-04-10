@@ -1,10 +1,7 @@
 # fcontext
 
-[![Build Status](https://travis-ci.org/posener/fcontext.svg?branch=master)](https://travis-ci.org/posener/fcontext)
 [![codecov](https://codecov.io/gh/posener/fcontext/branch/master/graph/badge.svg)](https://codecov.io/gh/posener/fcontext)
-[![golangci](https://golangci.com/badges/github.com/posener/fcontext.svg)](https://golangci.com/r/github.com/posener/fcontext)
-[![GoDoc](https://godoc.org/github.com/posener/fcontext?status.svg)](http://godoc.org/github.com/posener/fcontext)
-[![goreadme](https://goreadme.herokuapp.com/badge/posener/fcontext.svg)](https://goreadme.herokuapp.com)
+[![GoDoc](https://img.shields.io/badge/pkg.go.dev-doc-blue)](http://pkg.go.dev/github.com/posener/fcontext)
 
 Package fcontext provides a fully compatible (pseudo) constant
 value access-time alternative to the standard library context
@@ -18,7 +15,7 @@ less common use cases (This is why the term 'pseudo' is used).
 Please see the benchmarks below for details.
 Other parts of the context implementation left untouched.
 
-#### Concepts
+## Concepts
 
 The main assumption that is made in this implementation is that
 context values tree is mostly grows tall and barely grows wide.
@@ -58,7 +55,7 @@ func f(ctx context.Context) {
 This implementation will work either way, but will improve the
 performance of the first pattern significantly.
 
-#### Benchmarks
+## Benchmarks
 
 Run the benchmarks with `make bench`. Notice that micro benchmarks
 do not necessarily represent real world scenarios.
@@ -80,7 +77,7 @@ and 35 times better for 1000 values.
 the standard library context. (Can take up to 8 times if the
 context is only grown shallowly).
 
-#### Usage
+## Usage
 
 This library is fully compatible with the standard library context.
 
@@ -91,7 +88,5 @@ This library is fully compatible with the standard library context.
  )
 ```
 
-
 ---
-
-Created by [goreadme](https://github.com/apps/goreadme)
+Readme created from Go doc with [goreadme](https://github.com/posener/goreadme)
